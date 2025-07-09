@@ -2507,11 +2507,10 @@ document.addEventListener("click", (e) => {
 // ─── 🛰️ PWA / SERVICE WORKER REGISTRATION ─────────────────────────────
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("/service-worker.js")
+    .register("/Omega-Fit/service-worker.js")
     .then((reg) => {
       console.log("✅ Service Worker Registered:", reg);
       
-      // 🔍 Force reload if no controller yet
       if (!navigator.serviceWorker.controller) {
         console.warn("⚠️ No active Service Worker controller. Forcing reload after install...");
         navigator.serviceWorker.ready.then(() => {

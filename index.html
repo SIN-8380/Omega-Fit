@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <!-- Essential Meta Tags -->
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="theme-color" content="#ffffff" />
-<meta name="color-scheme" content="light dark" />
-<meta name="description" content="A fast, powerful workout planner for building discipline, strength, and performance.">
-<meta name="author" content="S!N" />
-<meta name="keywords" content="Workout Planner, Bodyweight Training, Fitness Tracker, V-Shaped Physique, Progressive Training, No Gym" />
+  <!-- Essential Meta Tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="A fast, powerful workout planner for building discipline, strength, and performance." />
+  <meta name="author" content="S!N" />
+  <meta name="keywords" content="Workout Planner, Bodyweight Training, Fitness Tracker, V-Shaped Physique, Progressive Training, No Gym" />
 
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://sin-8380.github.io/Omega-Fit/" />
-<meta property="og:title" content="Workout Planner – Dominate Your Discipline" />
-<meta property="og:description" content="A clean, fast, and efficient workout planner designed for seeking elite results." />
-<meta property="og:image" content="https://sin-8380.github.io/Omega-Fit/public/images/preview.jpg" />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sin-8380.github.io/Omega-Fit/" />
+  <meta property="og:title" content="Workout Planner – Dominate Your Discipline" />
+  <meta property="og:description" content="A clean, fast, and efficient workout planner designed for seeking elite results." />
+  <meta property="og:image" content="https://sin-8380.github.io/Omega-Fit/images/preview.jpg" />
 
-<!-- Twitter -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Workout Planner – Dominate Your Discipline" />
-<meta name="twitter:description" content="A clean, fast, and efficient workout planner designed for seeking elite results." />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Workout Planner – Dominate Your Discipline" />
+  <meta name="twitter:description" content="A clean, fast, and efficient workout planner designed for seeking elite results." />
 
-<!-- Web App Manifest -->
-<link rel="manifest" href="/Omega-Fit/manifest.json" />
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="manifest.json" />
 
-<!-- Icons -->
-<link rel="icon" href="/Omega-Fit/images/report.png" type="image/png" />
-<link rel="apple-touch-icon" href="/Omega-Fit/images/report.png" sizes="192x192" />
-<link rel="shortcut icon" href="/Omega-Fit/images/report.png" />
+  <!-- Icons -->
+  <link rel="icon" href="images/report.png" type="image/png" />
+  <link rel="apple-touch-icon" href="images/report.png" sizes="192x192" />
+  <link rel="shortcut icon" href="images/report.png" />
 
-<!-- Set theme on load -->
-<script>
-  if (localStorage.getItem("theme") === "dark") {
-    document.documentElement.classList.add("dark-theme");
-  }
-</script>
+  <!-- Theme Mode Init -->
+  <script>
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark-theme");
+    }
+  </script>
 
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Figtree:ital@0;1&family=Outfit:wght@700&display=swap" rel="stylesheet" />
-  <!-- Icon Fonts -->
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital@0;1&family=Outfit:wght@700&display=swap" rel="stylesheet" />
+
+  <!-- Flaticon Icon Fonts -->
   <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
-<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
-<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css">
-<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css">
-  
- <!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css">
 
-<!-- App Styles and Scripts -->
-<link rel="stylesheet" href="/Omega-Fit/css/style.css" />
-<script type="module" src="/Omega-Fit/js/main.js"></script>
-  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Styles & Scripts -->
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="module" src="js/main.js"></script>
 </head>
 <body onload="applySavedTheme()">
 

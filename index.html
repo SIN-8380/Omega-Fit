@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Essential Meta Tags -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="A fast, powerful workout planner for building discipline, strength, and performance.">
+<meta name="author" content="S!N" />
+<meta name="keywords" content="Workout Planner, Bodyweight Training, Fitness Tracker, V-Shaped Physique, Progressive Training, No Gym" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://yourdomain.com/" />
+<meta property="og:title" content="Workout Planner – Dominate Your Discipline" />
+<meta property="og:description" content="A clean, fast, and efficient workout planner designed for seeking elite results." />
+<meta property="og:image" content="https://yourdomain.com/preview.jpg" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Workout Planner – Dominate Your Discipline" />
+<meta name="twitter:description" content="A clean, fast, and efficient workout planner designed for seeking elite results." />
+
+<!-- Web App Manifest -->
+<link rel="manifest" href="/manifest.json" />
+
+<!-- All icons use the actual existing file -->
+<link rel="icon" href="/public/images/report.png" type="image/png" />
+<link rel="apple-touch-icon" href="/public/images/report.png" sizes="192x192" />
+<link rel="shortcut icon" href="/public/images/report.png" />
+  
+  <!-- Set theme on load -->
+  <script>
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark-theme");
+    }
+  </script>
+  
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital@0;1&family=Outfit:wght@700&display=swap" rel="stylesheet">
+
+
+  <!-- Icon Fonts -->
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-brands/css/uicons-brands.css">
+<link rel="stylesheet" href="https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="module" src="./js/main.js"></script>
+</head>
+<body onload="applySavedTheme()">
+
+      <!-- 🔝 Header with Date and Settings -->
+<header>
+  <div class="header-left">
+    <!-- 📅 Calendar -->
+    <button id="calendarToggle" class="btn" aria-label="Calendar" onclick="toggleCalendar()">
+      <i class="fi fi-rr-calendar" style="font-size: 30px;"></i>
+    </button>
+    
+    <!-- 📝 Notes -->
+    <button id="notesToggle" class="btn" aria-label="Notes" onclick="openNotesScreen()">
+      <i class="fi fi-rr-notebook" style="font-size: 28px;"></i>
+    </button>
+  </div>
+  
+  <div id="dateDisplay"></div>
+  
+  <button id="settingToggle" class="btn" aria-label="Settings" onclick="openSettings()">
+    <i class="fi fi-rr-settings" style="font-size: 30px;"></i>
+  </button>
+</header>
+
+<!-- 📅 Calendar Popup -->
+<div id="calendarWrapper" class="hidden">
+  <div class="calendar-popup">
+    <div class="calendar-header">
+      <button onclick="changeMonth(-1)">←</button>
+      <span id="calendarMonthLabel">Month Year</span>
+      <button onclick="changeMonth(1)">→</button>
+    </div>
+    <div id="calendar" class="calendar-grid"></div>
+  </div>
+</div>
+  
+    <!-- 📝 Notes Fullscreen Overlay -->
+  <div id="notesScreen">
+    <header class="notes-header">
+      <button onclick="closeNotesScreen()" class="btn" >
+        <i class="fi fi-sr-arrow-left"></i>
+      </button>
+      <h2>My Notes</h2>
+      <span class="header-spacer"></span>
+    </header>
+    
+    <div id="notesContainer"></div>
+    
+    <button onclick="createNoteBox()" class="floating-add-button">🖊️</button>
+  </div>
+
+<!-- App Wrapper -->
+<div id="app">
+
+  <!-- 📦 Workout Boxes Container -->
+  <div class="workout-container" id="workoutContainer"></div>
+  <button class="floating-btn" onclick="openAddWorkoutModal()">+</button>
+  <button class="floating-btn-profile" onclick="openProfileScreen()">●⁠_⁠⁠●</button>
+  
+  <!-- ➕ New Workout Box Modal -->
+  <div class="modal" id="addBoxModal">
+    <div class="modal-content">
+      <h3>New Workout Box</h3>
+      <input type="text" id="newBoxName" placeholder="Workout Box Name" />
+      <input type="number" id="prepTimeInput" placeholder="Prep Time (seconds)" min="0" />
+      <button class="btn" onclick="createWorkoutBox()">Create</button>
+      <button class="btn" onclick="closeModal('addBoxModal')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ▶ Workout Play Screen -->
+<div id="playScreen" class="play-screen">
+  <h2 id="playExerciseName">Exercise Name</h2>
+  
+  <div class="play-timer-container">
+    <svg class="play-timer-circle" viewBox="0 0 100 100">
+      <circle class="circle-bg" cx="50" cy="50" r="45" />
+      <circle class="circle-progress" cx="50" cy="50" r="45" />
+      <text class="circle-text" x="50" y="55" text-anchor="middle">0</text>
+    </svg>
+    <p id="playExerciseDetails"></p>
+  </div>
+  
+  <div class="play-controls">
+  <button class="btn control-btn" onclick="togglePauseResume(this)">⏸ Pause</button>
+    <button class="btn control-btn" onclick="nextSetOrExercise()">Next</button>
+    <button class="btn control-btn danger-btn" onclick="exitPlayMode()"> Stop</button>
+  </div>
+  
+  <div class="play-progress" id="exerciseProgress"></div>
+</div>
+
+  <!-- 🛠 Edit Workout Box Modal -->
+  <div class="modal" id="editOptionsModal">
+    <div class="modal-content">
+      <h3>Edit Workout Box</h3>
+      <button class="btn" onclick="openAddExerciseModal()">Add Exercise</button>
+      <button class="btn" onclick="openEditBoxModal()">Edit Whole Box</button>
+      <button class="btn" onclick="closeModal('editOptionsModal')">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- ➕ Add Exercise Modal -->
+  <div class="modal" id="addExerciseModal">
+    <div class="modal-content">
+      <h3>Add Exercise</h3>
+      <input type="text" id="exName" placeholder="Exercise Name" />
+      <input type="number" id="exSet" placeholder="Set" min="1" />
+      <input type="number" id="exRep" placeholder="Rep (0 if timed)" min="0" />
+      <input type="number" id="exTime" placeholder="Time (sec)" min="0" />
+      <input type="number" id="exRest" placeholder="Rest between set (sec)" min="0" />
+      <input type="number" id="exRestBetween" placeholder="Rest Before Next Exercise (sec)" min="0" />
+      <button class="btn" onclick="saveNewExercise()">Save</button>
+      <button class="btn" onclick="closeModal('addExerciseModal')">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- ✏️ Edit Box Modal -->
+<div class="modal" id="editBoxModal">
+  <div class="modal-content">
+    <h3>Edit Workout Box</h3>
+    <input type="text" id="editBoxName" />
+    
+    <!-- Here we’ll inject rows with: name + move + delete -->
+    <div id="editExerciseList"></div>
+    
+    <!-- Controls -->
+    <button class="btn" onclick="saveEditedBox()">Save</button>
+    <button class="btn" onclick="closeModal('editBoxModal')">Cancel</button>
+    <button class="btn danger-btn" onclick="deleteWorkoutBox()">Delete</button>
+  </div>
+</div>
+  
+</div>
+
+  
+<div id="settingsPage" class="settings-wrapper" style="display: none;">
+  <div class="settings-card">
+    <h2 class="settings-title">⚙️ Settings Panel</h2>
+    
+    <!-- 👤 Account -->
+    <section class="settings-section">
+      <h3 class="section-title">👤 Account</h3>
+      <div class="section-content">
+        <p><strong>Email:</strong> <span id="userEmailDisplay">user@gmail.com</span></p>
+        <div class="btn-group">
+          <button class="btn setting-btn full-width" onclick="confirmLogout()">🚪 Logout</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 🎨 Appearance -->
+    <section class="settings-section">
+      <h3 class="section-title">🎨 Appearance</h3>
+      <div class="section-content">
+        <div class="btn-group">
+          <button class="btn setting-btn" onclick="toggleTheme()">🌓 Toggle Theme</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 🔔 Notifications -->
+    <section class="settings-section">
+      <h3 class="section-title">🔔 Notifications</h3>
+      <div class="section-content">
+        <div class="btn-group">
+          <button id="notifyBtn" class="btn setting-btn">🔔 Enable Notifications</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 🗂️ Account Management -->
+    <section class="settings-section">
+      <h3 class="section-title">🗂️ Account Management</h3>
+      <div class="section-content">
+        <div class="btn-group">
+          <button class="btn danger-btn" onclick="resetEverything()">💣 Reset Everything</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 📄 About -->
+    <section class="settings-section">
+      <h3 class="section-title">📄 About This Web App</h3>
+      <div class="section-content">
+        <p><strong>Version:</strong> 1.0.0</p>
+        <p><strong>Developer:</strong> Walter Jake De lara</p>
+        <p><strong>Purpose:</strong> Personal workout planner for myself</p>
+      </div>
+    </section>
+    
+    <!-- 🔙 Back -->
+    <div class="settings-footer">
+      <button class="btn close-btn" onclick="closeSettings()">← Back to App</button>
+    </div>
+  </div>
+</div>
+
+<!-- 📄 Profile Page -->
+<div id="profilePage" class="profile-grid">
+  <div class="profile-header">
+<button class="btn omega-back-btn" onclick="closeProfileScreen()">
+  <i class="fi fi-sr-arrow-left"></i>
+</button>
+  </div>
+
+  <div class="profile-meta">
+    <div class="profile-top-row">
+      <div class="profile-pic-wrapper">
+        <img id="profilePic" src="/public/images/default.jpg" class="profile-pic" />
+        <input type="file" id="avatarUpload" accept="image/*" class="hidden-input" />
+      </div>
+      <div class="profile-name">
+        <h2 class="editable-name">
+          <span id="profileNameDisplay">Username</span>
+          <input id="profileNameInput" type="text" maxlength="18" />
+        </h2>
+        <p>Rank: <strong id="userRank"></strong></p>
+      </div>
+    </div>
+
+<div class="profile-badges">
+  <div class="badge-slot rookie-medal"></div>
+  <div class="badge-slot pro-medal"></div>
+  <div class="badge-slot elite-medal"></div>
+  <div class="badge-slot master-medal"></div>
+  <div class="badge-slot legend-medal"></div>
+</div>
+
+</div>
+
+  <hr class="profile-divider" />
+
+  <div class="profile-stats">
+    <div class="stat-row">
+      <span>Workouts Completed:</span>
+      <span><strong id="completedWorkouts">0</strong></span>
+    </div>
+    <div class="stat-row">
+      <span>Current Streak:</span>
+      <span><strong id="currentStreak">0 Days</strong></span>
+    </div>
+    <div class="stat-row">
+      <span>Last Workout:</span>
+      <span><strong id="lastWorkout">N/A</strong></span>
+    </div>
+    <div class="stat-row">
+      <span>Total Workout Boxes:</span>
+      <span><strong id="totalBoxes">0</strong></span>
+    </div>
+  </div>
+
+  <div class="profile-chart">
+    <canvas id="workoutChart" width="400" height="200"></canvas>
+  </div>
+</div>
+
+<!-- 🚨 Custom Alert -->
+<div id="customAlert" class="custom-alert hidden">
+  <div class="custom-alert-box">
+    <p id="customAlertMessage"></p>
+    <button id="customAlertOkBtn">OK</button>
+  </div>
+</div>
+
+<!-- ⚠️ Confirm Delete Dialog -->
+<div id="confirmDeleteDialog" class="custom-alert hidden">
+  <div class="custom-alert-box">
+    <p>⚠️ This will permanently delete your account and all workouts.</p>
+    <p>Type <strong>DELETE</strong> to confirm:</p>
+    <input
+      id="confirmDeleteInput"
+      type="text"
+      placeholder="Type DELETE..."
+      style="margin-top: 1rem;"
+    />
+    <div style="margin-top: 1.5rem;">
+      <button id="confirmDeleteBtn" style="margin-right: 1rem;">Confirm</button>
+      <button id="cancelDeleteBtn">Cancel</button>
+    </div>
+  </div>
+</div>
+  </body>
+  </html>

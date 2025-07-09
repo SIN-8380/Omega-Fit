@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Workout Planner</title>
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Workout Planner</h1>
+    <div class="login-box">
+      <input type="email" id="emailInput" placeholder="Email (Gmail only)" required>
+      <input type="password" id="passwordInput" placeholder="Password (App only)" required>
+      <button id="loginButton">Sign In</button>
+      <p>Don't have an account?
+      <button id="registerButton">Register</button></p>
+    </div>
+  </div>
+
+<!-- Custom Alert -->
+<div id="customAlert" class="custom-alert hidden">
+  <div class="custom-alert-box">
+    <p id="customAlertMessage"></p>
+    <button id="customAlertOkBtn">OK</button>
+  </div>
+</div>
+
+  <!-- Firebase SDKs -->
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>

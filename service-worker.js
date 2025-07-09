@@ -1,10 +1,10 @@
 const ASSETS_TO_CACHE = [
-  './index.html',
-  './css/style.css',
-  './js/main.js',
-  './public/images/default.jpg',
-  './public/sounds/timer.mp3',
-  './manifest.json'
+  '/Omega-Fit/index.html',
+  '/Omega-Fit/css/style.css',
+  '/Omega-Fit/js/main.js',
+  '/Omega-Fit/public/images/default.jpg',
+  '/Omega-Fit/public/sounds/timer.mp3',
+  '/Omega-Fit/manifest.json'
 ];
 
 // 🔧 Install: cache all essential assets

@@ -9,12 +9,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/Omega-Fit/public/images/report.png",
+      "src": "/Omega-Fit/images/report.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/Omega-Fit/public/images/report.png",
+      "src": "/Omega-Fit/images/report.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -27,7 +27,7 @@
       "url": "/Omega-Fit/index.html",
       "icons": [
         {
-          "src": "/Omega-Fit/public/images/report.png",
+          "src": "/Omega-Fit/images/report.png",
           "sizes": "192x192"
         }
       ]

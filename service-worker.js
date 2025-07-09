@@ -1,7 +1,7 @@
 const ASSETS_TO_CACHE = [
   '/Omega-Fit/index.html',
-  '/Omega-Fit/css/style.css',
-  '/Omega-Fit/js/main.js',
+  '/Omega-Fit/src/css/style.css',
+  '/Omega-Fit/src/js/main.js',
   '/Omega-Fit/images/default.jpg',
   '/Omega-Fit/sounds/timer.mp3',
   '/Omega-Fit/manifest.json'

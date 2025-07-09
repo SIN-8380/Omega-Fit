@@ -66,32 +66,25 @@ function waitForFirebaseAndRun() {
       
       localStorage.setItem("userId", userId);
       localStorage.setItem("userEmail", email);
-      
-      // 🔽 Data hydration
+    
       loadFromFirebase(userId);
       loadUserProfileFromFirebase(userId);
       loadAnalyticsFromFirebase(userId);
       loadNotes(userId); 
-      // 🧠 Load Rank
       fetchRankFromFirebase(userId);
       
-      // 🏅 Load badge progress and patch medals
       fetchBadgeProgress(userId).then((progressMap) => {
         const savedRank = localStorage.getItem("userRank") || "Rookie I";
         
-        // 🔧 Force patch any lower-tier medals to level 5 if skipped
         updateBadgeProgress(savedRank);
         
-        // 🧱 Get freshly patched map
         const patchedMap = JSON.parse(localStorage.getItem("userRankProgress") || "{}");
         
-        // 🎨 Render UI
         renderUserRank(savedRank);
         renderCurrentRankBadge(savedRank);
         renderAllUnlockedBadges(patchedMap);
       });
       
-      // 🎯 UI Sync
       setupAvatar?.();
       setupProfileName?.();
       injectUserEmail?.();
@@ -132,7 +125,7 @@ function closeModal(id) {
 }
 
 function openAddExerciseModal() {
-  // Reset all fields
+
   document.getElementById("exName").value = "";
   document.getElementById("exSet").value = "";
   document.getElementById("exRep").value = "";
@@ -175,7 +168,6 @@ function toggleNoteExpansion(noteId) {
   const noteBox = document.querySelector(`[data-note-id="${noteId}"]`);
   if (!noteBox) return;
   
-  // Collapse others
   document.querySelectorAll(".note-box.expanded").forEach(box => {
     box.classList.remove("expanded");
     const ta = box.querySelector(".note-content");
@@ -185,7 +177,6 @@ function toggleNoteExpansion(noteId) {
     if (backBtn) backBtn.style.display = "none";
   });
   
-  // Expand this one
   noteBox.classList.add("expanded");
   const textarea = noteBox.querySelector(".note-content");
   if (textarea) {
@@ -389,7 +380,6 @@ function saveProfileName() {
 function openProfileScreen() {
   document.getElementById("profilePage").style.display = "block";
 
-  // Hide other UI elements
   document.querySelector("header").style.display = "none";
   document.querySelector(".workout-container").style.display = "none";
   document.querySelector(".floating-btn").style.display = "none";
@@ -404,7 +394,6 @@ function openProfileScreen() {
 function closeProfileScreen() {
   document.getElementById("profilePage").style.display = "none";
 
-  // Restore other UI elements
   document.querySelector("header").style.display = "flex";
   document.querySelector(".workout-container").style.display = "block";
   document.querySelector(".floating-btn").style.display = "block";
@@ -468,15 +457,12 @@ window.loadFromFirebase = function() {
         return;
       }
       
-      // 💣 Step 0: Wipe current UI
       const container = document.getElementById("workoutContainer");
       if (container) container.innerHTML = "";
-      
-      // ✅ Step 1: Load and inject
+     
       const workoutData = snapshot.val();
       workoutData.forEach(createWorkoutBoxFromData);
       
-      // 💾 Step 2: Save backup locally
       localStorage.setItem("workoutData", JSON.stringify(workoutData));
     })
     .catch((err) => console.error("❌ Load failed:", err));
@@ -524,7 +510,6 @@ function startPlayMode(btn) {
   const box = btn.closest(".workout-box");
   playWorkoutBoxName = box.querySelector("h3").innerText.trim();
   
-  // 🧼 Prime the audio engine — clean preload
   if (timerBeep) timerBeep.load();
   
   const rows = Array.from(box.querySelectorAll("tbody tr"));
@@ -577,7 +562,6 @@ function startRestPhase(duration) {
   if (isFinalSet && isLastExercise && duration <= 0) {
     workoutFinishedNaturally = true;
     
-    // ⏳ Add 2 second delay before exit
     document.getElementById("playExerciseName").innerText = "Workout Complete";
     document.getElementById("playExerciseDetails").innerText = "Great job! Returning...";
     
@@ -604,7 +588,6 @@ function startRestPhase(duration) {
       if (playIndex >= playExercises.length) {
         workoutFinishedNaturally = true;
         
-        // ⏳ Add 2 second delay here too
         document.getElementById("playExerciseName").innerText = "Workout Complete";
         document.getElementById("playExerciseDetails").innerText = "Great job! Returning...";
         
@@ -726,12 +709,10 @@ function startCircularCountdown(durationInSeconds, onComplete) {
     const remainingMs = countdownTargetTime - now;
     remainingTime = Math.max(0, remainingMs / 1000);
     
-    // ⭕ Update visuals
     const offset = circumference * (1 - remainingTime / circularTotalSeconds);
     progress.style.strokeDashoffset = offset.toFixed(2);
     text.textContent = Math.ceil(remainingTime);
     
-    // 🔇 Prevent playing beep when duration is 0
     const beepOffset = 4 - remainingTime;
 
 if (!beepPlayed && remainingTime <= 4 && beepOffset >= 0 && beepOffset <= 4) {
@@ -959,7 +940,6 @@ function openEditBoxModal() {
     const block = document.createElement("div");
     block.classList.add("edit-exercise-block");
     
-    // Extract all the exercise data
     const exName = row.children[0]?.innerText.trim() || "";
 const set = row.children[1]?.innerText.trim() || "1";
 const rep = row.children[2]?.innerText.trim() || "0";
@@ -1015,11 +995,11 @@ function saveEditedBox() {
     `;
     tr.dataset.restAfter = restBetween;
     
-    tbody.appendChild(tr); // ← This line was missing
+    tbody.appendChild(tr);
   }
   
   closeModal("editBoxModal");
-  saveWorkoutData?.(); // optional chaining still valid
+  saveWorkoutData?.(); 
 }
 
 function moveExerciseBlock(button, direction) {
@@ -1109,7 +1089,6 @@ function renderAllNotes() {
     box.className = "note-box";
     box.dataset.noteId = note.id;
     
-    // 🔨 Header
     const header = document.createElement("div");
     header.className = "note-header";
     
@@ -1141,7 +1120,6 @@ function renderAllNotes() {
     header.appendChild(backBtn);
     header.appendChild(deleteBtn);
     
-    // ✍️ Content
     const contentWrapper = document.createElement("div");
     contentWrapper.className = "note-content-wrapper";
     
@@ -1156,7 +1134,6 @@ function renderAllNotes() {
     
     contentWrapper.appendChild(textarea);
     
-    // 💥 Click to Expand (except title/back/delete)
     box.addEventListener("click", (e) => {
       const ignoreClasses = ["note-title", "note-back-btn", "note-delete-btn"];
       if (ignoreClasses.some(cls => e.target.classList.contains(cls))) return;
@@ -1197,8 +1174,7 @@ function createNoteBox() {
   
   renderAllNotes();
   
-  // Release lock after render
-  setTimeout(() => noteCreationLock = false, 100); // Slight delay ensures no double fire
+  setTimeout(() => noteCreationLock = false, 100); 
 }
 
 function deleteNoteById(noteId) {
@@ -1208,16 +1184,13 @@ function deleteNoteById(noteId) {
     return;
   }
   
-  // Get and filter notes
   const userId = localStorage.getItem("userId");
   let currentNotes = JSON.parse(localStorage.getItem("userNotes") || "[]");
   currentNotes = currentNotes.filter(note => note.id !== noteId);
   
-  // Save updated notes
   localStorage.setItem("userNotes", JSON.stringify(currentNotes));
   saveNotes(userId, currentNotes);
   
-  // Re-render the battlefield
   renderAllNotes();
 }
 
@@ -1238,7 +1211,7 @@ function updateNote(noteId, field, newValue) {
   
   notes[noteIndex][field] = newValue;
   localStorage.setItem("userNotes", JSON.stringify(notes));
-  saveNotes(userId, notes); // Save to Firebase
+  saveNotes(userId, notes); 
 }
 
 // ─── 📤 EXPORT / IMPORT WORKOUTS ─────────────────────────────────────
@@ -1269,7 +1242,7 @@ function exportToJSON() {
 
 function importFromJSON(jsonData) {
   const data = JSON.parse(jsonData);
-  data.forEach(createWorkoutBoxFromData); // ✅ PASS SINGLE OBJECT
+  data.forEach(createWorkoutBoxFromData); 
   saveWorkoutData();
 }
 
@@ -1281,14 +1254,14 @@ function evaluateWorkoutStreak(today) {
 
   let streak = parseInt(localStorage.getItem("currentStreak") || "0");
 
-  if (!last || last === current) return; // already counted today
+  if (!last || last === current) return; 
 
   const diff = (new Date(current) - new Date(last)) / (1000 * 60 * 60 * 24);
 
   if (diff === 1) {
     streak++;
   } else if (diff > 1) {
-    streak = 1; // reset
+    streak = 1; 
   }
 
   localStorage.setItem("currentStreak", streak);
@@ -1301,7 +1274,6 @@ function renderWorkoutChart() {
   const ctx = canvas.getContext("2d");
   if (!ctx) return console.warn("⚠️ Canvas context not available");
   
-  // 💥 Prevent Chart.js duplication error
   if (window.workoutChartInstance) {
     window.workoutChartInstance.destroy();
   }
@@ -1386,7 +1358,7 @@ function markTodayWorkoutComplete() {
     log[today] = {};
   }
   
-  // If this box hasn't been logged today
+ 
   if (!log[today][boxName]) {
     log[today][boxName] = true;
     
@@ -1408,17 +1380,16 @@ function markTodayWorkoutComplete() {
 function updateProfileStats() {
   const log = JSON.parse(localStorage.getItem("workoutLog") || "{}");
   
-  // 💥 Total completed workouts
+ 
   const totalWorkouts = Object.values(log).reduce((sum, day) => {
   return sum + Object.keys(day).length;
 }, 0);
-  localStorage.setItem("totalWorkouts", totalWorkouts); // For Firebase consistency
-  
-  // 🧠 Sorted workout dates
+  localStorage.setItem("totalWorkouts", totalWorkouts); 
+
   const dates = Object.keys(log).sort();
   const lastDate = dates.at(-1) || "N/A";
   
-  // 🔁 Compute current streak — real consecutive days
+
   let streak = 0;
   const today = new Date();
   for (let i = 0; i < 365; i++) {
@@ -1432,7 +1403,6 @@ function updateProfileStats() {
     }
   }
   
-  // 📦 Inject into DOM (safe access)
   const cw = document.getElementById("completedWorkouts");
   const cs = document.getElementById("currentStreak");
   const lw = document.getElementById("lastWorkout");
@@ -1471,7 +1441,7 @@ function loadAnalyticsFromFirebase(userId, callback) {
     localStorage.setItem("lastWorkoutDate", analytics.lastWorkoutDate || "N/A");
     localStorage.setItem("workoutLog", JSON.stringify(analytics.workoutLog || {}));
     
-    if (typeof callback === "function") callback(); // 🔥 repaint UI
+    if (typeof callback === "function") callback(); 
   }).catch((err) => {
     console.error("❌ Failed to load analytics:", err);
   });
@@ -1497,24 +1467,21 @@ function renderCalendar(containerId = "calendar") {
   const firstDay = new Date(year, month, 1).getDay();
   const totalDays = new Date(year, month + 1, 0).getDate();
   
-  // ✅ Update month label
   const label = document.getElementById("calendarMonthLabel");
   if (label) {
     label.textContent = baseDate.toLocaleString("default", { month: "long", year: "numeric" });
   }
   
-  const totalSlots = 42; // Always render 6 rows
+  const totalSlots = 42; 
   const blanksBefore = firstDay;
   const blanksAfter = totalSlots - (blanksBefore + totalDays);
   
-  // 🕳️ Leading blanks
   for (let i = 0; i < blanksBefore; i++) {
     const blank = document.createElement("div");
     blank.classList.add("calendar-day", "blank");
     container.appendChild(blank);
   }
   
-  // 📆 Real days
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(year, month, i);
     const key = date.toLocaleDateString("en-CA", { timeZone: "Asia/Manila" });
@@ -1538,7 +1505,6 @@ function renderCalendar(containerId = "calendar") {
     container.appendChild(dayEl);
   }
   
-  // 🕳️ Trailing blanks
   for (let i = 0; i < blanksAfter; i++) {
     const blank = document.createElement("div");
     blank.classList.add("calendar-day", "blank");
@@ -1587,26 +1553,21 @@ function updateUserRank() {
   
   const rank = calculateUserRank(totalWorkouts);
   
-  // 🧠 Save rank to localStorage
   localStorage.setItem("userRank", rank);
   document.getElementById("userRank").innerText = rank;
   
   const userId = localStorage.getItem("userId");
   
-  // 🔥 Save to Firebase
   if (userId) {
     saveRankToFirebase(userId, rank);
   } else {
     console.warn("⚠️ Cannot save rank — userId not found.");
   }
   
-  // 🧠 Update badge progress
   updateBadgeProgress(rank);
   
-  // 🎖️ Evaluate for next tier if needed
   evaluateNextBadgeTier(rank);
   
-  // 🧬 Sync visuals and progress
   const progressMap = JSON.parse(localStorage.getItem("userRankProgress") || "{}");
   syncBadgesAfterRankChange(rank, progressMap);
 }
@@ -1775,8 +1736,8 @@ function getBadgeSVGByRank(rankTitle) {
   }
   
   const [tierRaw, romanLevel] = rankTitle.trim().split(" ");
-  const tier = capitalize(tierRaw); // e.g., "rookie" → "Rookie"
-  const level = convertRomanToNumber(romanLevel); // e.g., "IV" → 4
+  const tier = capitalize(tierRaw);
+  const level = convertRomanToNumber(romanLevel); 
   
   const registry = defineBadgeRegistry();
   
@@ -1798,7 +1759,6 @@ function updateBadgeProgress(userRank) {
   const tiers = ["Rookie", "Pro", "Elite", "Master", "Legend"];
   const tierIndex = tiers.indexOf(tier);
   
-  // 🧠 Normalize all previous tiers to 5 if not already present
   for (let i = 0; i < tierIndex; i++) {
     const pastTier = tiers[i];
     if (!progressMap[pastTier] || progressMap[pastTier] < 5) {
@@ -1806,7 +1766,6 @@ function updateBadgeProgress(userRank) {
     }
   }
   
-  // 🧠 Update current tier if higher level reached
   const current = progressMap[tier] || 1;
   if (level > current) {
     progressMap[tier] = level;
@@ -1829,8 +1788,8 @@ function renderCurrentRankBadge(currentRank) {
   }
   
   const [tierRaw, romanLevel] = currentRank.trim().split(" ");
-  const tier = capitalize(tierRaw); // e.g., "rookie" → "Rookie"
-  const level = convertRomanToNumber(romanLevel); // e.g., "IV" → 4
+  const tier = capitalize(tierRaw);
+  const level = convertRomanToNumber(romanLevel);
   
   const registry = defineBadgeRegistry();
   const svg = registry?.[tier]?.[level];
@@ -1860,16 +1819,15 @@ function renderAllUnlockedBadges(progressMap = {}) {
       continue;
     }
     
-    container.innerHTML = ""; // Clear previous content
+    container.innerHTML = "";
     
     const level = progressMap[tier] || 0;
-    const svg = level > 0 ? registry[tier]?.[level] : registry[tier]?.[1]; // fallback
+    const svg = level > 0 ? registry[tier]?.[level] : registry[tier]?.[1]; 
     
     const wrapper = document.createElement("div");
     wrapper.className = `badge-wrapper ${level > 0 ? "unlocked" : "locked"}`;
     wrapper.innerHTML = svg || "";
     
-    // Optional: Tooltip
     wrapper.title = level > 0 ? `${tier} ${toRoman(level)}` : `${tier} — Locked`;
     
     container.appendChild(wrapper);
@@ -1940,7 +1898,6 @@ function evaluateNextBadgeTier(currentRank) {
   const progressMap = JSON.parse(localStorage.getItem("userRankProgress") || "{}");
   const savedLevel = progressMap[tier] || 0;
   
-  // 🔼 Only update and re-render if new level is higher
   if (level > savedLevel) {
     progressMap[tier] = level;
     localStorage.setItem("userRankProgress", JSON.stringify(progressMap));
@@ -1980,20 +1937,15 @@ function syncBadgesAfterRankChange(rankTitle, progressMap) {
     return;
   }
   
-  // Update localStorage
   localStorage.setItem("userRank", rankTitle);
   localStorage.setItem("userRankProgress", JSON.stringify(progressMap));
   
-  // Update the main profile rank display
   renderUserRank(rankTitle);
   
-  // Update current rank badge (main badge display)
   renderCurrentRankBadge(rankTitle);
   
-  // Update all unlocked badges in the badge grid
   renderAllUnlockedBadges(progressMap);
   
-  // Ensure badge progress is synced to Firebase
   const userId = localStorage.getItem("userId");
   if (userId) {
     saveRankToFirebase(userId, rankTitle, progressMap);
@@ -2008,7 +1960,6 @@ function syncBadgesAfterRankChange(rankTitle, progressMap) {
 function openSettings() {
   document.getElementById("settingsPage").style.display = "block";
   
-  // Hide main UI elements
   const header = document.querySelector("header");
   const workoutContainer = document.getElementById("workoutContainer");
   const profileScreen = document.getElementById("profileScreen");
@@ -2021,7 +1972,6 @@ function openSettings() {
 function closeSettings() {
   document.getElementById("settingsPage").style.display = "none";
   
-  // Restore UI elements
   const header = document.querySelector("header");
   const workoutContainer = document.getElementById("workoutContainer");
   
@@ -2031,7 +1981,7 @@ function closeSettings() {
 
 function showSettingsSection(section) {
   const content = document.getElementById("settingsContent");
-  content.innerHTML = ""; // Wipe it clean
+  content.innerHTML = ""; 
   
   if (section === "account") {
     const email = localStorage.getItem("userEmail") || "Unknown";
@@ -2043,7 +1993,6 @@ function showSettingsSection(section) {
       <div id="userEmailDisplay" style="margin-bottom: 1rem;">${email}</div>
     `;
     
-    // Avatar update
     document.getElementById("avatarUploadSettings").addEventListener("change", function() {
   const file = this.files[0];
   if (!file) return;
@@ -2094,12 +2043,12 @@ window.applySavedTheme = function() {
       })
       .catch((err) => {
         console.warn("⚠️ Firebase theme load failed:", err);
-        // Fallback to localStorage
+      
         const theme = localStorage.getItem("theme");
         document.documentElement.classList.toggle("dark-theme", theme === "dark");
       });
   } else {
-    // No user, fallback only to localStorage
+  
     const theme = localStorage.getItem("theme");
     document.documentElement.classList.toggle("dark-theme", theme === "dark");
   }
@@ -2182,7 +2131,7 @@ function scheduleDailyReminder(hour = 8) {
   const timeout = target.getTime() - now.getTime();
   
   setTimeout(() => {
-    // 🔐 Only if the service worker is ready
+  
     navigator.serviceWorker.ready.then((registration) => {
       registration.active?.postMessage({
         action: 'showNotification',
@@ -2190,13 +2139,13 @@ function scheduleDailyReminder(hour = 8) {
         options: {
           body: 'Your workout awaits. Launch the app now.',
           icon: '/assets/icons/icon-512.png',
-          badge: '/assets/icons/badge-128.png', // optional
-          vibrate: [200, 100, 200], // optional
+          badge: '/assets/icons/badge-128.png', 
+          vibrate: [200, 100, 200],
         }
       });
     });
     
-    scheduleDailyReminder(hour); // 🔁 Loop daily
+    scheduleDailyReminder(hour); 
   }, timeout);
 }
 
@@ -2210,7 +2159,7 @@ function fetchRankFromFirebase(userId) {
       const rank = snapshot.exists() ? snapshot.val() : "Rookie I";
       localStorage.setItem("userRank", rank);
       
-      // 🔄 Update DOM
+     
       const rankEl = document.getElementById("userRank");
       if (rankEl) {
         rankEl.innerText = rank;
@@ -2218,7 +2167,7 @@ function fetchRankFromFirebase(userId) {
         console.warn("⚠️ #userRank element not found.");
       }
       
-      // 🔁 Fetch badge progress from Firebase
+     
       fetchBadgeProgress(userId).then((progressMap) => {
         syncBadgesAfterRankChange(rank, progressMap);
       });
@@ -2235,7 +2184,7 @@ function fetchRankFromFirebase(userId) {
         rankEl.innerText = fallbackRank;
       }
       
-      // 🔁 Even on failure, fallback on default badge sync
+    
       const defaultProgress = {};
       localStorage.setItem("userRankProgress", JSON.stringify(defaultProgress));
       syncBadgesAfterRankChange(fallbackRank, defaultProgress);
@@ -2245,8 +2194,8 @@ function fetchRankFromFirebase(userId) {
 window.confirmLogout = function() {
   const auth = getAuth();
   auth.signOut().then(() => {
-    localStorage.clear(); // Wipe all cached user data
-    window.location.href = "login.html"; // Redirect to login
+    localStorage.clear(); 
+    window.location.href = "login.html"; 
   }).catch((error) => {
     showCustomAlert("❌ Logout failed: " + error.message);
   });
@@ -2268,7 +2217,6 @@ window.resetEverything = async function() {
     await remove(ref(db, `users/${userId}`));
     localStorage.clear();
     
-    // Now wait for user to click "OK" before deleting account and redirecting
     showCustomAlert("✅ All data deleted. Click OK to finish account deletion.", async () => {
       try {
         await deleteUser(user);
@@ -2363,7 +2311,7 @@ document.getElementById("notifyBtn")?.addEventListener("click", async () => {
         title: '✅ Notifications Enabled',
         options: {
           body: "You’ll get a reminder daily at 8:00 AM.",
-          icon: '/public/images/default.jpg' // Replace with actual icon path
+          icon: 'src/images/default.jpg' 
         }
       });
 
@@ -2377,7 +2325,7 @@ document.getElementById("notifyBtn")?.addEventListener("click", async () => {
   }
 });
 window.openNotesScreen = function() {
-  const mainUI = document.querySelector("#app"); // ← place it here
+  const mainUI = document.querySelector("#app");
   const notesScreen = document.querySelector("#notesScreen");
   
   if (!mainUI || !notesScreen) {

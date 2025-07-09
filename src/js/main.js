@@ -48,7 +48,7 @@ let noteCreationLock = false;
 const badgeRegistry = defineBadgeRegistry();
 const svg = badgeRegistry["Rookie"][3];
 // ─── 🔊 SOUND CONFIG ───────────────────────────────────────────────
-const soundPathPrefix = location.hostname === "localhost" ? "/Omega-Fit/sounds/" : /sounds/";
+const soundPathPrefix = location.hostname === "localhost" ? /sounds/" : "/Omega-Fit/sounds/";
 const timerBeep = new Audio(soundPathPrefix + "timer.mp3");
 
 // ─── 🧪 BOOTSTRAP: AUTH + DATA LOAD ─────────────────────────────────────

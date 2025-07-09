@@ -495,14 +495,15 @@ function saveNotes(userId, notes) {
 
 function loadNotes(userId) {
   const db = getDatabase();
-  const notesRef = ref(db, `notes/${userId}`);
-  
+  const notesRef = ref(db, users/${userId}/notes);
+
   get(notesRef)
     .then(snapshot => {
       const notes = snapshot.exists() ? snapshot.val() : [];
       localStorage.setItem("userNotes", JSON.stringify(notes));
       renderAllNotes();
-    });
+    })
+    .catch(err => console.error("❌ Failed to load notes:", err));
 }
 
 // ─── 🎮 PLAY MODE EXECUTION ─────────────────────────────────────────

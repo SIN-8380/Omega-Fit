@@ -488,7 +488,7 @@ function saveRankToFirebase(userId, rank, progressMap = {}) {
 function saveNotes(userId, notes) {
   
   const db = getDatabase();
-  const notesRef = ref(db, 'users/${userId}/notes');
+  const notesRef = ref(db, `users/${userId}/notes`);
   //const notesRef = ref(db, `notes/${userId}`);
   
   set(notesRef, notes);
@@ -496,7 +496,7 @@ function saveNotes(userId, notes) {
 
 function loadNotes(userId) {
   const db = getDatabase();
-  const notesRef = ref(db, 'users/${userId}/notes');
+  const notesRef = ref(db, `users/${userId}/notes`);
 
   get(notesRef)
     .then(snapshot => {

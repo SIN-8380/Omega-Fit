@@ -11,7 +11,6 @@ import {
   set
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-// ✅ Your actual Firebase config — replace with real values
 const firebaseConfig = {
   apiKey: "AIzaSyBPo_Ye4r9JBKXyNODh7lqJ0SCaxKwApVs",
   authDomain: "workoutplanner-8380.firebaseapp.com",
@@ -77,7 +76,6 @@ function handleRegister() {
     .then((userCred) => {
       const user = userCred.user;
 
-      // Save initial user data
       set(ref(db, "users/" + user.uid), {
         email: email,
         workouts: []

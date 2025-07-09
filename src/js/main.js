@@ -496,7 +496,7 @@ function saveNotes(userId, notes) {
 
 function loadNotes(userId) {
   const db = getDatabase();
-  const notesRef = ref(db, `users/${userId}/notes`);
+  const notesRef = ref(db, users/${userId}/notes); // ✅ Correct path
 
   get(notesRef)
     .then(snapshot => {

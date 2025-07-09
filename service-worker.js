@@ -14,7 +14,7 @@ self.addEventListener('install', (event) => {
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
-  self.skipWaiting(); // Activate immediately
+  self.skipWaiting(); 
 });
 
 // 🔁 Activate: delete old caches
@@ -30,7 +30,7 @@ self.addEventListener('activate', (event) => {
       )
     )
   );
-  self.clients.claim(); // Take control immediately
+  self.clients.claim();
 });
 
 // 🌐 Fetch: serve from cache, fallback to network
@@ -39,7 +39,6 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then((cached) => {
       return cached || fetch(event.request);
     }).catch(() => {
-      // Optional: fallback to offline.html if needed
     })
   );
 });

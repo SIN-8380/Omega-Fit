@@ -48,8 +48,10 @@ let noteCreationLock = false;
 const badgeRegistry = defineBadgeRegistry();
 const svg = badgeRegistry["Rookie"][3];
 // ─── 🔊 SOUND CONFIG ───────────────────────────────────────────────
-const soundPathPrefix = location.hostname === "localhost" ? "/public/sounds/" : "/Omega-Fit/public/sounds/";
-const timerBeep = new Audio(soundPathPrefix + "timer.mp3");
+const isLocal = location.hostname === "localhost";
+const basePath = isLocal ? "" : "/Omega-Fit";
+
+const timerBeep = new Audio(${basePath}/sounds/timer.mp3);
 
 // ─── 🧪 BOOTSTRAP: AUTH + DATA LOAD ─────────────────────────────────────
 function waitForFirebaseAndRun() {

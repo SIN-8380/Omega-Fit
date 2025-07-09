@@ -2,19 +2,19 @@
   "name": "WorkoutPlanner",
   "short_name": "WorkoutPlanner",
   "description": "A minimalist browser-based workout planner for building your body with control and clarity.",
-  "start_url": "./index.html",
+  "start_url": "/Omega-Fit/index.html",
   "display": "standalone",
   "background_color": "#1C1C1C",
   "theme_color": "#1C1C1C",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/public/images/report.png",
+      "src": "/Omega-Fit/public/images/report.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/public/images/report.png",
+      "src": "/Omega-Fit/public/images/report.png",
       "sizes": "512x512",
       "type": "image/png"
     }
@@ -24,10 +24,10 @@
       "name": "Start Workout",
       "short_name": "Start",
       "description": "Quick access to your workouts",
-      "url": "./index.html",
+      "url": "/Omega-Fit/index.html",
       "icons": [
         {
-          "src": "/public/images/report.png",
+          "src": "/Omega-Fit/public/images/report.png",
           "sizes": "192x192"
         }
       ]
